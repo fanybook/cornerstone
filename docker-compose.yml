@@ -1,0 +1,77 @@
+version: '3'
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+services:
+
+### Workspace Utilities ##################################
+    workspace:
+      build:
+        context: ./workspace
+      volumes:
+        - ../:/var/www
+      ports:
+        - "2222:22"
+      tty: true
+      networks:
+        - frontend
+        - backend
+
+### PHP-FPM ##############################################
+    php-fpm:
+      build:
+        context: ./php-fpm
+      volumes:
+        - ../:/var/www
+      depends_on:
+        - workspace
+      tty: true
+      networks:
+        - backend
+
+### Caddy Server #########################################
+    caddy:
+      build: ./caddy
+      volumes:
+        - ../:/var/www
+        - ./caddy/Caddyfile:/etc/Caddyfile
+        - ./logs/caddy:/var/log/caddy
+        - ~/.laradock/data:/root/.caddy
+      ports:
+        - "80:80"
+        - "443:443"
+      depends_on:
+        - php-fpm
+      networks:
+        - frontend
+        - backend
+
+### Certbot ##############################################
+    certbot:
+      build:
+        context: ./php-fpm
+      volumes:
+        - ./certbot/letsencrypt/:/var/www/letsencrypt
+      networks:
+        - frontend
+
+### Nginx ################################################
+    nginx:
+      build:
+        context: ./nginx
+      volumes:
+        - ../:/var/www
+        - ./logs/nginx/:/var/log/nginx
+        - ./nginx/sites/:/etc/nginx/sites-available
+      ports:
+        - "80:80"
+        - "433:443"
+      depends_on:
+        - php-fpm
+      networks:
+        - frontend
+        - backend
