@@ -12,6 +12,8 @@ RUN apk update \
     && apk upgrade \
     && apk add --no-cache --virtual .build-deps \
     build-base \
+    shadow \
+    && usermod -u 1000 www-data
     && docker-php-ext-install bcmath \
     && apk add --no-cache libpng-dev \
     && docker-php-ext-install gd \
