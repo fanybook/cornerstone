@@ -11,6 +11,6 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 EXPOSE 80 443 2015
 
-WORKDIR /var/www
+WORKDIR /var/www/public
 
 CMD ["/usr/bin/caddy", "-conf", "/etc/caddy/Caddyfile"]

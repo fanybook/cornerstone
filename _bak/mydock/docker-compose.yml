@@ -38,21 +38,35 @@ services:
       build: ./caddy
       volumes:
         - ../:/var/www
-        - ./caddy/Caddyfile:/etc/Caddyfile
+        - ./caddy/conf:/etc/caddy
         - ./logs/caddy:/var/log/caddy
-        - ~/.laradock/data:/root/.caddy
+#        - ~/.laradock/data:/root/.caddy
       ports:
         - "80:80"
         - "443:443"
-      depends_on:
-        - php-fpm
+#      depends_on:
+#        - php-fpm
       networks:
         - frontend
         - backend
 
     caddy-builder:
-      image: fanybook/caddy-builder
+      image: registry.cn-beijing.aliyuncs.com/fanybook/caddy-builder
       tty: true
+      networks:
+        - frontend
+        - backend
+
+    test-mini:
+      build:
+        context: ./test-mini
+        args:
+          - CHANGE_ALPINE_SOURCE=${CHANGE_ALPINE_SOURCE}
+      tty: true
+      networks:
+        - frontend
+        - backend
+
 
 ### Certbot ##############################################
     certbot:

@@ -48,7 +48,7 @@ RUN apk update \
 # apk add unixodbc-dev
 # mkdir /usr/local/incl
 # cp /usr/include/sqlext.h /usr/local/incl/
-# 鍙︿竴鏂规 RUN ln -s /usr/include /usr/local/incl
+# 另一方案 RUN ln -s /usr/include /usr/local/incl
 # docker-php-ext-install odbc
 RUN set -ex; \
 	docker-php-source extract; \

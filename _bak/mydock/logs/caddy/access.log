@@ -1,0 +1,4 @@
+192.168.1.6 - - [15/Jul/2018:03:45:22 +0000] "GET /currentsetting.htm HTTP/1.1" 502 16
+192.168.1.6 - - [15/Jul/2018:04:51:05 +0000] "GET /currentsetting.htm HTTP/1.1" 502 16
+192.168.1.6 - - [15/Jul/2018:05:09:31 +0000] "GET /currentsetting.htm HTTP/1.1" 502 16
+192.168.1.6 - - [15/Jul/2018:05:27:57 +0000] "GET /currentsetting.htm HTTP/1.1" 502 16
