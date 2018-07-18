@@ -50,6 +50,9 @@ services:
         - frontend
         - backend
 
+    caddy-builder:
+      build: ./caddy-builder
+
 ### Certbot ##############################################
     certbot:
       build:
