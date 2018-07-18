@@ -1,21 +1,16 @@
 FROM golang:1.10.3-alpine3.7
 
-ARG CHANGE_ALPINE_SOURCE=false
+ARG CHANGE_ALPINE_SOURCE=true
 RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
 ;fi
 
-ARG plugins="git"
+# don't del git & build-base (dep gcc .. when caddyplug install)
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache git \
-    && apk add --no-cache --virtual .build-deps \
-    build-base \
+    && apk add --no-cache build-base \
     && go get github.com/abiosoft/caddyplug/caddyplug \
     && caddyplug install-caddy \
-    && caddyplug install ${plugins} \
     && caddy --version \
-    && apk del .build-deps \
     && rm -rf /var/cache/apk/*
-#    && rm -rf /go/src \
-#    && rm -rf /root/lib
