@@ -1,7 +1,7 @@
 FROM fanybook/caddy-builder AS builder
 
-ARG plugins="git"
-RUN caddyplug install ${plugins}
+# ARG plugins="git"
+# RUN caddyplug install ${plugins}
 
 FROM alpine:3.7
 
