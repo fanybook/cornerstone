@@ -7,20 +7,21 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
 ;fi
 
-# don't del libpng-dev (dep libpng when php start with gd)
+# dep libpng when php start with gd
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache --virtual .build-deps \
     build-base \
+    libpng-dev \
     shadow \
     && groupmod -g 1000 www-data \
     && usermod -u 1000 www-data \
     && docker-php-ext-install bcmath \
-    && apk add --no-cache libpng-dev \
     && docker-php-ext-install gd \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install opcache \
     && apk del .build-deps \
+    && apk add --no-cache libpng \
     && rm -rf /var/cache/apk/*
 
 EXPOSE 9000
