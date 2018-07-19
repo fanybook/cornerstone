@@ -19,6 +19,7 @@ RUN apk update \
     && apk add --no-cache libpng-dev \
     && docker-php-ext-install gd \
     && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install opcache \
     && apk del .build-deps \
     && rm -rf /var/cache/apk/*
 
