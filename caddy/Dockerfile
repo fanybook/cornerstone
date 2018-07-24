@@ -5,7 +5,7 @@ FROM fanybook/caddy-builder AS builder
 
 FROM alpine:3.7
 
-MAINTAINER Fanybook <fanybook@126.com>
+LABEL maintainer="Fanybook <fanybook@126.com>"
 
 ARG CHANGE_ALPINE_SOURCE=false
 RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
@@ -15,6 +15,16 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache ca-certificates
+
+ARG CHANGE_ALPINE_SOURCE=false
+RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
+;fi
+
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache ca-certificates
+    && rm -rf /var/cache/apk/*
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
