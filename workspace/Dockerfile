@@ -42,4 +42,4 @@ EXPOSE 22
 
 WORKDIR /var/www
 
-CMD ["sshd", "-D"]
+CMD ["/usr/sbin/sshd", "-D"]
