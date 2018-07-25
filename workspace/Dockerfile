@@ -27,7 +27,7 @@ RUN apk update \
     && apk add --no-cache libpng \
     && rm -rf /var/cache/apk/*
 
-RUN echo "root:root" | chpasswd \
+RUN echo "root:mydock123!@#" | chpasswd \
     && sed -ir 's/#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
     && sed -ir 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_key/HostKey \/etc\/ssh\/ssh_host_key/g' /etc/ssh/sshd_config \
@@ -42,4 +42,4 @@ EXPOSE 22
 
 WORKDIR /var/www
 
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["sh", "-c", "crond -l 2 && /usr/sbin/sshd -D"]
