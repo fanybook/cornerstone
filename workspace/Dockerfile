@@ -38,10 +38,10 @@ RUN echo "root:root" | chpasswd \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_ed25519_key/HostKey \/etc\/ssh\/ssh_host_ed25519_key/g' /etc/ssh/sshd_config \
     && /usr/bin/ssh-keygen -A \
     && ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key \
-    && rc-update add sshd boot \
-    && rc-update add crond boot
+    && rc-update add sshd boot
 
 EXPOSE 22
 
 WORKDIR /var/www
 
+CMD ["/usr/sbin/crond", "-l 2"]
