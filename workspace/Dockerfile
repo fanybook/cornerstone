@@ -42,4 +42,4 @@ EXPOSE 22
 
 WORKDIR /var/www
 
-CMD ["sh", "-c", "crond -l 2 -f && sshd -D"]
+CMD ["sshd", "-D"]
