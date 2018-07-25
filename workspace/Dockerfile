@@ -10,7 +10,6 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
 # dep libpng when php start with gd
 RUN apk update \
     && apk upgrade \
-    && apk add --no-cache openrc \
     && apk add --no-cache openssh \
     && apk add --no-cache git \
     && apk add --no-cache subversion \
@@ -37,11 +36,10 @@ RUN echo "root:root" | chpasswd \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_ecdsa_key/HostKey \/etc\/ssh\/ssh_host_ecdsa_key/g' /etc/ssh/sshd_config \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_ed25519_key/HostKey \/etc\/ssh\/ssh_host_ed25519_key/g' /etc/ssh/sshd_config \
     && /usr/bin/ssh-keygen -A \
-    && ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key \
-    && rc-update add sshd boot
+    && ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key
 
 EXPOSE 22
 
 WORKDIR /var/www
 
-CMD ["/usr/sbin/crond", "-l 2"]
+CMD ["sh", "-c", "crond -l 2 -f && sshd -D"]
