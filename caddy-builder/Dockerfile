@@ -2,7 +2,7 @@ FROM golang:1.10.3-alpine3.7
 
 LABEL maintainer="Fanybook <fanybook@126.com>"
 
-ARG CHANGE_ALPINE_SOURCE=true
+ARG CHANGE_ALPINE_SOURCE=false
 RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
 ;fi

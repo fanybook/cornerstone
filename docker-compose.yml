@@ -6,14 +6,16 @@ networks:
   backend:
     driver: bridge
 
+## build时，不互相依赖且都tty:true，networks仿真实便于调试
 services:
-
 ### Workspace Utilities ##################################
     workspace:
       build:
         context: ./workspace
+        args:
+          - CHANGE_ALPINE_SOURCE=${CHANGE_ALPINE_SOURCE}
       volumes:
-        - ../:/var/www
+        - /data/www:/var/www
       ports:
         - "2222:22"
       tty: true
@@ -21,61 +23,69 @@ services:
         - frontend
         - backend
 
+
 ### PHP-FPM ##############################################
     php-fpm:
       build:
         context: ./php-fpm
+        args:
+          - CHANGE_ALPINE_SOURCE=${CHANGE_ALPINE_SOURCE}
       volumes:
-        - ../:/var/www
-      depends_on:
-        - workspace
+        - /data/www:/var/www
       tty: true
       networks:
         - backend
 
+
+### Redis ################################################
+    redis:
+      build:
+        context: ./redis
+        args:
+          - CHANGE_ALPINE_SOURCE=${CHANGE_ALPINE_SOURCE}
+      volumes:
+        - /data/.mydock/redis:/data
+      ports:
+        - "6379:6379"
+      tty: true
+      networks:
+        - backend
+
+
 ### Caddy Server #########################################
     caddy:
-      build: ./caddy
+      build:
+        context: ./caddy
+        args:
+          - CHANGE_ALPINE_SOURCE=${CHANGE_ALPINE_SOURCE}
       volumes:
-        - ../:/var/www
-        - ./caddy/Caddyfile:/etc/Caddyfile
-        - ./logs/caddy:/var/log/caddy
-        - ~/.laradock/data:/root/.caddy
+        - /data/www:/var/www
+        - /data/logs/caddy:/var/log/caddy
+        - /data/.mydock/caddy:/root/.caddy
+        - ./caddy/conf:/etc/caddy
       ports:
         - "80:80"
         - "443:443"
-      depends_on:
-        - php-fpm
+      tty: true
       networks:
         - frontend
         - backend
 
     caddy-builder:
-      image: fanybook/caddy-builder
+      build:
+        context: ./caddy-builder
+        args:
+          - CHANGE_ALPINE_SOURCE=${CHANGE_ALPINE_SOURCE}
       tty: true
+
 
 ### Certbot ##############################################
     certbot:
       build:
-        context: ./php-fpm
+        context: ./certbot
+        args:
+          - CHANGE_ALPINE_SOURCE=${CHANGE_ALPINE_SOURCE}
       volumes:
         - ./certbot/letsencrypt/:/var/www/letsencrypt
       networks:
         - frontend
-
-### Nginx ################################################
-    nginx:
-      build:
-        context: ./nginx
-      volumes:
-        - ../:/var/www
-        - ./logs/nginx/:/var/log/nginx
-        - ./nginx/sites/:/etc/nginx/sites-available
-      ports:
-        - "80:80"
-        - "433:443"
-      depends_on:
-        - php-fpm
-      networks:
-        - frontend
-        - backend
