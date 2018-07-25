@@ -1,4 +1,4 @@
-FROM redis:4.0-alpine
+FROM redis:3.2-alpine
 
 LABEL maintainer="Fanybook <fanybook@126.com>"
 
