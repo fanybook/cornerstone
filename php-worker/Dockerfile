@@ -11,7 +11,7 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache libpng \
-    && apk add --no-cache supervisor \
+    && apk add --no-cache nodejs \
     && apk add --no-cache --virtual .build-deps \
     build-base \
     libpng-dev \
@@ -20,8 +20,14 @@ RUN apk update \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install opcache \
     && apk del .build-deps \
+    && node -v \
+    && npm -v \
+    && npm install -g pm2@2.9.3 \
+    && pm2 -v \
     && rm -rf /var/cache/apk/*
 
-EXPOSE 9001
-
 WORKDIR /var/www
+
+USER www-data
+
+CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
