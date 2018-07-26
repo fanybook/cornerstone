@@ -13,10 +13,7 @@ RUN apk update \
     && apk add --no-cache git \
     && apk add --no-cache subversion \
     && apk add --no-cache openssh \
-    && apk add --no-cache openrc \
     && apk add --no-cache libpng \
-    && apk add --no-cache nodejs \
-#    && apk add --no-cache sudo \
     && apk add --no-cache --virtual .build-deps \
     build-base \
     libpng-dev \
@@ -28,10 +25,6 @@ RUN apk update \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install opcache \
     && apk del .build-deps \
-    && node -v \
-    && npm -v \
-    && npm install -g pm2@2.9.3 \
-    && pm2 -v \
     && rm -rf /var/cache/apk/*
 
 RUN echo "root:mydock123!@#" | chpasswd \
@@ -43,15 +36,10 @@ RUN echo "root:mydock123!@#" | chpasswd \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_ecdsa_key/HostKey \/etc\/ssh\/ssh_host_ecdsa_key/g' /etc/ssh/sshd_config \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_ed25519_key/HostKey \/etc\/ssh\/ssh_host_ed25519_key/g' /etc/ssh/sshd_config \
     && /usr/bin/ssh-keygen -A \
-    && ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key \
-    && rc-update add sshd
+    && ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key
 
 EXPOSE 22
 
 WORKDIR /var/www
 
-# CMD ["sudo", "-u www-data", "pm2", "start", "pm2cfg.yml"]
-
-USER www-data
-
-CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
+CMD ["sh", "-c", "/usr/sbin/sshd && crond -l 2 -f"]
