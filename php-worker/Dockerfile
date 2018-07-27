@@ -28,6 +28,8 @@ RUN apk update \
 
 WORKDIR /var/www
 
-USER www-data
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
 
+USER www-data
 CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
