@@ -2,7 +2,7 @@ FROM php:7.1-cli-alpine
 
 LABEL maintainer="Fanybook <fanybook@126.com>"
 
-ARG CHANGE_ALPINE_SOURCE=false
+ARG CHANGE_ALPINE_SOURCE=true
 RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
 ;fi

@@ -3,4 +3,4 @@ set -e
 
 chown -R www-data /home/www-data
 
-exec "$@"
+exec su-exec www-data "$@"
