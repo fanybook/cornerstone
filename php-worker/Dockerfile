@@ -30,6 +30,7 @@ RUN apk update \
 WORKDIR /var/www
 
 COPY docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
+RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
