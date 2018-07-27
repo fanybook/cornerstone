@@ -14,6 +14,8 @@ RUN apk update \
     && apk add --no-cache subversion \
     && apk add --no-cache openssh \
     && apk add --no-cache libpng \
+    && apk add --no-cache nodejs \
+    && apk add --no-cache su-exec \
     && apk add --no-cache --virtual .build-deps \
     build-base \
     libpng-dev \
@@ -25,6 +27,10 @@ RUN apk update \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install opcache \
     && apk del .build-deps \
+    && node -v \
+    && npm -v \
+    && npm install -g pm2@2.9.3 \
+    && pm2 -v \
     && rm -rf /var/cache/apk/*
 
 RUN echo "root:mydock123!@#" | chpasswd \
@@ -42,4 +48,8 @@ EXPOSE 22
 
 WORKDIR /var/www
 
-CMD ["sh", "-c", "/usr/sbin/sshd && crond -l 2 -f"]
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
