@@ -1,0 +1,56 @@
+I want to get a clear answer.
+
+I did a test, the rule like this:
+
+    fastcgi / php-fpm:9000 php {
+        index index.php
+    }
+
+     # step1
+    rewrite {
+        regexp ^(.+)/$
+        to {1} {1}/
+    }
+
+    # step2
+    rewrite {
+        to {path} /index.php?{query}
+    }
+
+
+    # step3
+    redir 301 {
+        if {uri} ends_with /
+        / {rewrite_uri}
+    }
+
+
+case 1:
+
+    {host}/
+    afert setp1: not in
+    afert setp2: try /  try /index.php?
+    afert setp3: {uri} is '/' ? {rewrite_uri} is '/index.php?' ?
+result is 'ERR_TOO_MANY_REDIRECTS', because of without `if {rewrite_uri} not_ends_with /`
+why ?
+
+case 2:
+
+    {host}/admin/login/
+    afert setp1: in
+    afert setp2:
+    afert setp3:
+
+case 3:
+
+    {host}/assets/css/
+    afert setp1:
+    afert setp2:
+    afert setp3:
+
+case 4:
+
+    /api/circle/group?limit=2
+    afert setp1:
+    afert setp2:
+    afert setp3:
