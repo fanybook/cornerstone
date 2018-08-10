@@ -12,16 +12,18 @@ if [ ! -d "/run/mysqld" ]; then
 fi
 
 if [ -d /var/lib/mysql/mysql ]; then
-    echo '[i] MySQL directory already present, skipping creation'
+    echo "[i] MySQL directory already present, skipping creation"
+
+    chown -R mysql:mysql /var/lib/mysql
 else
     echo "[i] MySQL data directory not found, creating initial DBs"
 
     chown -R mysql:mysql /var/lib/mysql
 
     # init database
-    echo 'Initializing database'
+    echo "Initializing database"
     mysql_install_db --user=mysql > /dev/null
-    echo 'Database initialized'
+    echo "Database initialized"
 
     echo "[i] MySql root password: $MYSQL_ROOT_PWD"
 
@@ -60,7 +62,7 @@ EOF
         fi
     fi
 
-    echo 'FLUSH PRIVILEGES;' >> $tfile
+    echo "FLUSH PRIVILEGES;" >> $tfile
 
     # run sql in tempfile
     echo "[i] run tempfile: $tfile"
@@ -71,5 +73,5 @@ fi
 echo "[i] Sleeping 5 sec"
 sleep 5
 
-echo '[i] start running mysqld'
+echo "[i] start running mysqld"
 exec "$@"
