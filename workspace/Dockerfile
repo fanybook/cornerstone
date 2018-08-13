@@ -31,6 +31,8 @@ RUN apk update \
     && npm -v \
     && npm install -g pm2@2.9.3 \
     && pm2 -v \
+    && pm2 update \
+    && pm2 -v \
     && rm -rf /var/cache/apk/*
 
 RUN sed -ir 's/#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
