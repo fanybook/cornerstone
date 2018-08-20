@@ -26,10 +26,11 @@ RUN apk update \
     && npm -v \
     && npm install -g pm2@2.9.3 \
     && pm2 -v \
+    && pm2 update \
+    && pm2 -v \
     && rm -rf /var/cache/apk/*
 
-RUN echo "root:mydock123!@#" | chpasswd \
-    && sed -ir 's/#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
+RUN sed -ir 's/#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
     && sed -ir 's/#Port 22/Port 22/g' /etc/ssh/sshd_config \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_key/HostKey \/etc\/ssh\/ssh_host_key/g' /etc/ssh/sshd_config \
     && sed -ir 's/#HostKey \/etc\/ssh\/ssh_host_rsa_key/HostKey \/etc\/ssh\/ssh_host_rsa_key/g' /etc/ssh/sshd_config \
@@ -48,4 +49,5 @@ RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
+# CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
+CMD ["pm2-runtime", "/var/www/pm2process.yml", "--web"]

@@ -5,7 +5,8 @@ set -e
 SSH_ROOT_PWD=${SSH_ROOT_PWD:-"mydock123!@#"}
 
 echo "root:$SSH_ROOT_PWD" | chpasswd
+/usr/sbin/sshd && crond -l 2
 
-/usr/sbin/sshd
+chown -R www-data:www-data /home/www-data
 
-exec "$@"
+exec su-exec www-data "$@"
