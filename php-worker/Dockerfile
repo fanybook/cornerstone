@@ -47,4 +47,4 @@ RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["pm2-runtime", "/var/www/pm2process.yml"]
+CMD ["pm2-runtime", "/etc/pm2/pm2process.yml"]
