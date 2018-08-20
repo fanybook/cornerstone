@@ -38,7 +38,7 @@ RUN sed -ir 's/#PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config \
     && /usr/bin/ssh-keygen -A \
     && ssh-keygen -t rsa -b 4096 -f  /etc/ssh/ssh_host_key
 
-EXPOSE 22
+EXPOSE 22 9615
 
 WORKDIR /var/www
 
@@ -47,5 +47,4 @@ RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-# CMD ["pm2", "start", "/var/www/pm2cfg.yml", "--no-daemon"]
 CMD ["pm2-runtime", "/var/www/pm2process.yml", "--web"]
