@@ -9,4 +9,9 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
 
 EXPOSE 6379
 
-CMD ["redis-server"]
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
+
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["redis-server", "/etc/redis/redis.conf"]
