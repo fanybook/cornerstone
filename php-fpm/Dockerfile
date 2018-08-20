@@ -10,6 +10,10 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
 # dep libpng when php start with gd
 RUN apk update \
     && apk upgrade \
+    && apk add --no-cache libpng \
+    && apk add --no-cache libjpeg-turbo \
+    && apk add --no-cache freetype \
+    && apk add --no-cache libmcrypt \
     && apk add --no-cache --virtual .build-deps \
     build-base \
     libpng-dev \
@@ -25,7 +29,6 @@ RUN apk update \
     && docker-php-ext-install -j$(nproc) pdo_mysql \
     && docker-php-ext-install -j$(nproc) opcache \
     && apk del .build-deps \
-    && apk add --no-cache libpng \
     && rm -rf /var/cache/apk/*
 
 EXPOSE 9000
