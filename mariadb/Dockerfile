@@ -9,7 +9,7 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
 
 RUN apk update \
     && apk upgrade \
-    && apk add --no-cache mysql=10.1.20 mysql-client \
+    && apk add --no-cache 'mysql=10.1.20' mysql-client \
     && addgroup mysql mysql  \
     && rm -rf /var/cache/apk/*
 
