@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.7
 
 LABEL maintainer="Fanybook <fanybook@126.com>"
 
@@ -9,7 +9,7 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
 
 RUN apk update \
     && apk upgrade \
-    && apk add --no-cache mysql mysql-client \
+    && apk add --no-cache mysql=10.1.20 mysql-client \
     && addgroup mysql mysql  \
     && rm -rf /var/cache/apk/*
 
