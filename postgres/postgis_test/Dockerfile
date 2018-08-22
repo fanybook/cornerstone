@@ -59,7 +59,7 @@ RUN set -ex \
         protobuf-c \
     && cd / \
     && rm -rf /usr/src/postgis \
-    && apk del .fetch-deps .build-deps .build-deps-testing
+    && apk del .fetch-deps .build-deps .build-deps-testing \
     && rm -rf /var/cache/apk/*
 
 COPY ./initdb-postgis.sh /docker-entrypoint-initdb.d/postgis.sh
