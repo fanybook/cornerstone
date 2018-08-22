@@ -1,4 +1,4 @@
-FROM postgres:10-alpine
+FROM mdillon/postgis:10-alpine
 
 LABEL maintainer="Fanybook <fanybook@126.com>"
 
