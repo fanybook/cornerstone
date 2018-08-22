@@ -2,8 +2,8 @@ FROM mdillon/postgis:10-alpine
 
 LABEL maintainer="Fanybook <fanybook@126.com>"
 
-echo -e "#!/bin/sh\n\nls -l --color=auto \"\$@\"" > /bin/ll
-chmod 777 /bin/ll
+RUN echo -e "#!/bin/sh\n\nls -l --color=auto \"\$@\"" > /bin/ll \
+    && chmod 777 /bin/ll
 
 ARG CHANGE_ALPINE_SOURCE=true
 RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
