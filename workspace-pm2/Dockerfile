@@ -23,6 +23,7 @@ RUN apk update \
     && apk add --no-cache libmcrypt \
     && apk add --no-cache libpq \
     && apk add --no-cache nodejs \
+    && apk add --no-cache nodejs-npm \
     && apk add --no-cache su-exec \
     && apk add --no-cache --virtual .build-deps \
     build-base \
