@@ -61,4 +61,4 @@ RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["crond", "-l 2", "-f"]
+CMD ["/usr/sbin/sshd", "-D"]

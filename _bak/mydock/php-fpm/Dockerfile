@@ -25,44 +25,56 @@ RUN apk update \
 ###########################################################################
 # Swoole EXTENSION
 # docker-php-ext-install bcmath
+
 # apk add bzip2-dev
 # docker-php-ext-install bz2
+
 # docker-php-ext-install dba
+
 # apk add enchant-dev
 # docker-php-ext-install enchant
+
 # docker-php-ext-install exif
+
 # apk add libpng-dev
 # docker-php-ext-install gd
 # docker-php-ext-install gettext
+
 # apk add gmp-dev
 # docker-php-ext-install gmp
+
 # apk add imap-dev
 # docker-php-ext-install imap
+
 # apk add icu-dev
 # docker-php-ext-install intl
+
 # apk add openldap-dev
 # docker-php-ext-install ldap
+
 # apk add libmcrypt-dev
 # docker-php-ext-install mcrypt
+
 # docker-php-ext-install mysqli
+
 # apk add unixodbc-dev
 # mkdir /usr/local/incl
 # cp /usr/include/sqlext.h /usr/local/incl/
 # ΑνÒ»·½°Έ RUN ln -s /usr/include /usr/local/incl
 # docker-php-ext-install odbc
 RUN set -ex; \
-	docker-php-source extract; \
-	{ \
-		echo '# https://github.com/docker-library/php/issues/103#issuecomment-271413933'; \
-		echo 'AC_DEFUN([PHP_ALWAYS_SHARED],[])dnl'; \
-		echo; \
-		cat /usr/src/php/ext/odbc/config.m4; \
-	} > temp.m4; \
-	mv temp.m4 /usr/src/php/ext/odbc/config.m4; \
-	apk add --no-cache unixodbc-dev; \
-	docker-php-ext-configure odbc --with-unixODBC=shared,/usr; \
-	docker-php-ext-install odbc; \
-	docker-php-source delete
+    docker-php-source extract; \
+    { \
+        echo '# https://github.com/docker-library/php/issues/103#issuecomment-271413933'; \
+        echo 'AC_DEFUN([PHP_ALWAYS_SHARED],[])dnl'; \
+        echo; \
+        cat /usr/src/php/ext/odbc/config.m4; \
+    } > temp.m4; \
+    mv temp.m4 /usr/src/php/ext/odbc/config.m4; \
+    apk add --no-cache unixodbc-dev; \
+    docker-php-ext-configure odbc --with-unixODBC=shared,/usr; \
+    docker-php-ext-install odbc; \
+    docker-php-source delete
 
 
 # docker-php-ext-install pcntl
