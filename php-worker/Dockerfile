@@ -21,6 +21,7 @@ RUN apk update \
     && apk add --no-cache libmcrypt \
     && apk add --no-cache libpq \
     && apk add --no-cache nodejs \
+    && apk add --no-cache nodejs-npm \
     && apk add --no-cache su-exec \
     && apk add --no-cache --virtual .build-deps \
     build-base \
@@ -65,4 +66,4 @@ RUN chmod 775 /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["pm2-runtime", "/etc/pm2/pm2process.yml"]
+CMD ["/usr/sbin/sshd", "-D"]
