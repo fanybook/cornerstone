@@ -6,7 +6,7 @@ networks:
   backend:
     driver: bridge
 
-## buildÊ±£¬²»»¥ÏàÒÀÀµÇÒ¶¼tty:true£¬networks·ÂÕæÊµ±ãÓÚµ÷ÊÔ
+## buildæ—¶ï¼Œä¸äº’ç›¸ä¾èµ–ä¸”éƒ½tty:trueï¼Œnetworksä»¿çœŸå®ä¾¿äºè°ƒè¯•
 services:
 ### Workspace Utilities ##################################
     workspace:

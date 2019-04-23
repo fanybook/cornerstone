@@ -1,4 +1,4 @@
-FROM mdillon/postgis:10-alpine
+FROM mdillon/postgis:11-alpine
 
 LABEL maintainer="Fanybook <fanybook@126.com>"
 
