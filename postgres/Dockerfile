@@ -10,6 +10,8 @@ RUN if [ ${CHANGE_ALPINE_SOURCE} = true ]; then \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories \
 ;fi
 
+RUN sed -ir "s/'UTC'/'Asia\/Shanghai'/g" /var/lib/postgresql/data/postgresql.conf
+
 EXPOSE 5432
 
 CMD ["postgres"]
